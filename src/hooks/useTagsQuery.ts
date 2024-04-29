@@ -1,19 +1,23 @@
 import usePostsQuery from "./usePostsQuery"
 import { getAllSelectItemsFromPosts } from "src/libs/utils/notion"
 
-export const useTagsQuery = () => {
-  const posts = usePostsQuery()
-  const tags = getAllSelectItemsFromPosts("tags", posts)
+interface ItemCount {
+  [itemName: string]: number;
+}
 
-  // 태그 정렬 로직
+
+export const useTagsQuery = (): ItemCount => {
+  const posts = usePostsQuery();
+  const tags = getAllSelectItemsFromPosts("tags", posts);
+
   return Object.entries(tags)
     .sort(([a], [b]) => {
-      if (a === "[방명록]") return -1
-      if (b === "[방명록]") return 1
-      return a.localeCompare(b)
+      if (a === "방명록") return -1;
+      if (b === "방명록") return 1;
+      return a.localeCompare(b);
     })
     .reduce((obj, [key, value]) => {
-      obj[key] = value
-      return obj
-    }, {})
-}
+      obj[key] = value;
+      return obj;
+    }, {} as ItemCount);
+};

@@ -15,6 +15,13 @@ const CusdisComponent = dynamic(
   { ssr: false }
 )
 
+// Dynamically import the Giscus component
+const GiscusComponent = dynamic(
+  () => import("./Giscus"), // Make sure the path matches your file structure
+  { ssr: false } // Disable server-side rendering for this component
+);
+
+
 type Props = {
   data: TPost
 }
@@ -26,8 +33,9 @@ const CommentBox: React.FC<Props> = ({ data }) => {
       {CONFIG.cusdis.enable && (
         <CusdisComponent id={data.id} slug={data.slug} title={data.title} />
       )}
+      {CONFIG.giscus.enable && <GiscusComponent />}
     </div>
-  )
+  );
 }
 
 export default CommentBox
